@@ -7,8 +7,8 @@
 ExitProcess PROTO, dwExitCode:dword
 
 .data
-numX dword 128
-numY dword 256
+numX dword 32
+numY dword 21
 answer dword 0
 
 .code
@@ -16,22 +16,26 @@ main proc
     mov eax, numX
     mov ebx, numY
     
-.while:
-    test eax, eax
-    je .finished
-    test ebx, ebx
-    je .finished
+	L1:
+		test eax, eax   ;x==0
+		je finished   
+		test ebx, ebx   ;y==0
+		je finished
     
-    test eax, 00000001
-    jz .MultDiv
-    add answer, eax
+	    test ebx, 00000001
+		jz Shifts
+		add answer, eax
+		jmp Shifts
+		
     
-.MultDiv:
-    shr eax, 1
-    shl ebx, 1
-    jmp .while
+	 loop L1
+    
+	Shifts:
+		shr ebx, 1
+		shl eax, 1
+		jmp L1
 
-.finished:
+	finished:
 
 	invoke ExitProcess,0
 main endp
